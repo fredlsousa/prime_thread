@@ -6,6 +6,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <fstream>
+#include <functional>
 
 using namespace std;
 
@@ -14,44 +15,37 @@ void eh_Primo(int limiteInf, int limiteSup);
 int main(){
     int i;
     int pid;
-    int lim_inf = 0, lim_sup = 0;
-
-    cout << "Limite Inferior: " << endl;
-    cin >> lim_inf;
-    cout << "Limite Superior: " << endl;
-    cin >> lim_sup;
-    // Parent creates the first child.
+    clock_t comecaTimer, paraTimer;
+    comecaTimer = clock();
+ 
     pid = fork();
 
-    // Child 1 finds the prime numbers from 1 to 100.
+    
     if(pid == 0)
-        eh_Primo(lim_inf, 100);
+        eh_Primo(1, 100);
 
-        // Parent creates child 2.
     else if(pid > 0){
         pid = fork();
 
-        // Child 2 finds prime numbers from 101 to 300
         if(pid == 0)
             eh_Primo(101, 300);
-            // Parent creates child 3.
+   
         else if(pid > 0){
             pid = fork();
-            // Child 3 finds prime numbers
-            // from 301 to 600
+            
             if(pid == 0)
                 eh_Primo(301, 600);
 
-                // Parent creates child 4.
             else if(pid > 0){
                 pid = fork();
-                // Child 4 finds prime numbers
-                // from 601 to 1000.
+                
                 if(pid == 0)
-                    eh_Primo(601, lim_sup);
+                    eh_Primo(601, 1000);
             }
         }
     }
+    paraTimer = clock();
+    cout << "Tempo de execucao: " << (double)(paraTimer - comecaTimer) / CLOCKS_PER_SEC << endl;
 
     return 0;
 }
